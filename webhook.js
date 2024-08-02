@@ -1,6 +1,8 @@
-// netlify/functions/webhook.js
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+
+// Log the path where 'nodemailer' is resolved
+console.log(require.resolve('nodemailer'));
 
 exports.handler = async (event) => {
     const secret = process.env.RAZORPAY_SECRET;
