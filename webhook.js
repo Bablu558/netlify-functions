@@ -4,10 +4,16 @@ const nodemailer = require('nodemailer');
 
 exports.handler = async (event) => {
     const secret = process.env.RAZORPAY_SECRET;
+
+    // Ensure the request body is a string
+    const payload = JSON.stringify(event.body);
+
+    // Generate the HMAC SHA256 signature
     const shasum = crypto.createHmac('sha256', secret);
-    shasum.update(event.body);
+    shasum.update(payload);
     const digest = shasum.digest('hex');
 
+    // Compare the generated signature with the one received in the headers
     if (digest === event.headers['x-razorpay-signature']) {
         // Process payment and send email
         return {
